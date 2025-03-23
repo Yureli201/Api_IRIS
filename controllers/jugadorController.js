@@ -39,6 +39,17 @@ exports.obtenerJugadorPorId = async (req, res) => {
   }
 };
 
+exports.obtenerJugadorUsername = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const [rows] = await db.execute('SELECT id, first_name, last_name, email, phone, username, created_at FROM jugador WHERE username = ?', [username]);
+    if (rows.length === 0) return res.status(404).json({ message: 'Jugador no encontrado' });
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 exports.login = async (req, res) => {
   const { username, password } = req.body;
 

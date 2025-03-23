@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const jugadorController = require('../controllers/jugadorController');
 
-router.post('/register', jugadorController.crearJugador);
+router.post('/registrar', jugadorController.crearJugador);
 router.post('/login', jugadorController.login);
-router.get('/', jugadorController.obtenerJugadores);
-router.get('/:id', jugadorController.obtenerJugadorPorId);
-router.put('/:id', jugadorController.actualizarJugador);
-router.delete('/:id', jugadorController.eliminarJugador);
+router.get('/buscarTodos', jugadorController.obtenerJugadores);
+router.get('/buscar/:id', jugadorController.obtenerJugadorPorId);
+router.get('/buscarUs/:username', jugadorController.obtenerJugadorUsername);
+router.put('/actualizar/:id', jugadorController.actualizarJugador);
+router.delete('/eliminar/:id', jugadorController.eliminarJugador);
 
 module.exports = router;
