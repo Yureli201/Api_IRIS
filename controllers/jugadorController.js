@@ -31,7 +31,7 @@ exports.obtenerJugadores = async (req, res) => {
 exports.obtenerJugadorPorId = async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await db.execute('SELECT id, first_name, last_name, email, phone, username, created_at FROM jugador WHERE id = ?', [id]);
+    const [rows] = await db.execute('SELECT id, first_name, last_name, email, phone, username, password FROM jugador WHERE id = ?', [id]);
     if (rows.length === 0) return res.status(404).json({ message: 'Jugador no encontrado' });
     res.json(rows[0]);
   } catch (error) {
@@ -43,7 +43,7 @@ exports.obtenerJugadorUsername = async (req, res) => {
   const { username } = req.params;
   try {
     const [rows] = await db.execute('SELECT id, first_name, last_name, email, phone, username, created_at FROM jugador WHERE username = ?', [username]);
-    if (rows.length === 0) return res.status(404).json({ message: 'Jugador no encontrado' });
+    if (rows.length === 0) return res.status(404).json({ type:'No encontrado', message: 'Jugador no encontrado' });
     res.json(rows[0]);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -67,14 +67,18 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
-    const payload = { id: jugador.id, username: jugador.username };
     const token = jwt.sign(payload, 'clave_secreta_jwt', { expiresIn: '1h' });
 
     res.json({
       message: 'Inicio de sesión exitoso',
       token: token,
+      id: jugador.id,
+      username: jugador.username
     });
+
     console.log("Login");
+    console.log(res.json);
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
@@ -84,11 +88,12 @@ exports.login = async (req, res) => {
 
 exports.actualizarJugador = async (req, res) => {
   const { id } = req.params;
-  const { first_name, last_name, email, phone, username } = req.body;
+  const { first_name, last_name, email, phone, password } = req.body;
   try {
+    const hashedPassword = await bcrypt.hash(password, 10);
     await db.execute(
-      'UPDATE jugador SET first_name = ?, last_name = ?, email = ?, phone = ?, username = ? WHERE id = ?',
-      [first_name, last_name, email, phone, username, id]
+      'UPDATE jugador SET first_name = ?, last_name = ?, email = ?, phone = ?, username = ?, password= ? WHERE id = ?',
+      [first_name, last_name, email, phone, username, hashedPassword, id]
     );
     res.json({ message: 'Jugador actualizado' });
   } catch (error) {
