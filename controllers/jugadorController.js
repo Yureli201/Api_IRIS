@@ -7,11 +7,17 @@ exports.crearJugador = async (req, res) => {
   const { first_name, last_name, email, phone, username, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const [result] = await db.execute(
+    const [resJug] = await db.execute(
       'INSERT INTO jugador (first_name, last_name, email, phone, username, password) VALUES (?, ?, ?, ?, ?, ?)',
       [first_name, last_name, email, phone, username, hashedPassword]
     );
-    res.status(201).json({ message: 'Jugador creado', id: result.insertId });
+    const [resProg] = await db.execute(
+          `INSERT INTO progresojugador (id_jugador, puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas) 
+           VALUES (?, ?, ?, ?, ?)`,
+          [id_jugador, puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas]
+     );
+    
+    res.status(201).json({ message: 'Jugador creado', id: resJug.insertId });
     console.log("Registro");
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -104,6 +110,7 @@ exports.actualizarJugador = async (req, res) => {
 exports.eliminarJugador = async (req, res) => {
   const { id } = req.params;
   try {
+    await db.execute('DELETE FROM progresojugador WHERE id_jugador = ?', [id]);
     await db.execute('DELETE FROM jugador WHERE id = ?', [id]);
     res.json({ message: 'Jugador eliminado' });
   } catch (error) {

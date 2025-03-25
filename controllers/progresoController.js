@@ -69,15 +69,3 @@ exports.actualizarProgreso = async (req, res) => {
   }
 };
 
-exports.eliminarProgreso = async (req, res) => {
-  const { id_progreso } = req.params;
-  try {
-    await db.execute(
-      `DELETE FROM progresojugador WHERE id_progreso = ?`,
-      [id_progreso]
-    );
-    res.json({ message: 'Progreso eliminado' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
