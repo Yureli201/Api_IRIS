@@ -14,9 +14,8 @@ exports.crearJugador = async (req, res) => {
     const [resProg] = await db.execute(
           `INSERT INTO progresojugador (id_jugador, puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas) 
            VALUES (?, ?, ?, ?, ?)`,
-          [id_jugador, puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas]
+          [resJug.insertId, 0, 0, 0, 0]
      );
-    
     res.status(201).json({ message: 'Jugador creado', id: resJug.insertId });
     console.log("Registro");
   } catch (error) {

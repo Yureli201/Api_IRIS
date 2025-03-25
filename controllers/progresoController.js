@@ -1,19 +1,5 @@
 const db = require('../db');
 
-exports.crearProgreso = async (req, res) => {
-  const { id_jugador, puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas } = req.body;
-  try {
-    const [result] = await db.execute(
-      `INSERT INTO progresojugador (id_jugador, puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas) 
-       VALUES (?, ?, ?, ?, ?)`,
-      [id_jugador, puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas]
-    );
-    res.status(201).json({ message: 'Progreso creado', id_progreso: result.insertId });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
 exports.obtenerTodos = async (req, res) => {
   try {
     const [rows] = await db.execute(
