@@ -26,7 +26,7 @@ exports.crearJugador = async (req, res) => {
 
 exports.obtenerJugadores = async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT id, first_name, last_name, email, phone, username, created_at FROM jugador');
+    const [rows] = await db.execute('SELECT id, first_name, last_name, email, phone, username, password FROM jugador');
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -46,20 +46,20 @@ exports.obtenerJugadorPorId = async (req, res) => {
 
 exports.obtenerJugadorUsername = async (req, res) => {
   const { username } = req.params;
-  console.log("Parámetro recibido:", username); // Verifica el parámetro recibido
+  console.log("Parámetro recibido:", username);
   try {
       const [rows] = await db.execute(
-          'SELECT id, first_name, last_name, email, phone, username, created_at FROM jugador WHERE username = ?',
+          'SELECT id, first_name, last_name, email, phone, username, password FROM jugador WHERE username = ?',
           [username]
       );
-      console.log("Resultados de la consulta:", rows); // Verifica los resultados de la consulta
+      console.log("Resultados de la consulta:", rows);
       if (rows.length === 0) {
           console.log("Jugador no encontrado");
           return res.status(404).json({ type: 'No encontrado', message: 'Jugador no encontrado' });
       }
       res.json(rows[0]);
   } catch (error) {
-      console.error("Error en la consulta:", error.message); // Muestra el error en la consola
+      console.error("Error en la consulta:", error.message);
       res.status(500).json({ error: error.message });
   }
 };
