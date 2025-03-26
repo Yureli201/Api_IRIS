@@ -113,8 +113,10 @@ exports.actualizarJugador = async (req, res) => {
       [first_name, last_name, email, phone, username, hashedPassword, id]
     );
     res.json({ message: 'Jugador actualizado' });
+    console.log(res.json);
   } catch (error) {
     res.status(500).json({ error: error.message });
+    console.log(error.message);
   }
 };
 
