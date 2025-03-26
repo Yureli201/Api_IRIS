@@ -104,6 +104,8 @@ exports.login = async (req, res) => {
 exports.actualizarJugador = async (req, res) => {
   const { id } = req.params;
   const { first_name, last_name, email, phone, password } = req.body;
+  console.log("Datos recibidos:", req.params, req.body);
+  
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     await db.execute(
