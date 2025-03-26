@@ -109,8 +109,8 @@ exports.actualizarJugador = async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     await db.execute(
-      'UPDATE jugador SET first_name = ?, last_name = ?, email = ?, phone = ?, username = ?, password= ? WHERE id = ?',
-      [first_name, last_name, email, phone, username, hashedPassword, id]
+      'UPDATE jugador SET first_name = ?, last_name = ?, email = ?, phone = ?, password= ? WHERE id = ?',
+      [first_name, last_name, email, phone, hashedPassword, id]
     );
     res.json({ message: 'Jugador actualizado' });
     console.log(res.json);
