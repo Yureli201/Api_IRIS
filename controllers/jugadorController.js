@@ -72,6 +72,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
+    const payload = { id: jugador.id, username: jugador.username };
     const token = jwt.sign(payload, 'clave_secreta_jwt', { expiresIn: '1h' });
 
     res.json({
