@@ -66,7 +66,7 @@ exports.obtenerJugadorUsername = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
-
+  console.log("Datos recibidos:", req.body);
   try {
     const [rows] = await db.execute('SELECT * FROM jugador WHERE username = ?', [username]);
 
