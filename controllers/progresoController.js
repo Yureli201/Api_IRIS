@@ -42,14 +42,17 @@ exports.obtenerPorJugador = async (req, res) => {
 exports.actualizarProgreso = async (req, res) => {
   const { id_progreso } = req.params;
   const { puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas } = req.body;
+  console.log("Datos recibidos:", puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas);
+  console.log("ID:", id_progreso);
   try {
     await db.execute(
       `UPDATE progresojugador 
        SET puntuacion = ?, partidas_jugadas = ?, partidas_ganadas = ?, partidas_perdidas = ? 
-       WHERE id_progreso = ?`,
+       WHERE id_jugador = ?`,
       [puntuacion, partidas_jugadas, partidas_ganadas, partidas_perdidas, id_progreso]
     );
     res.json({ message: 'Progreso actualizado' });
+    
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
