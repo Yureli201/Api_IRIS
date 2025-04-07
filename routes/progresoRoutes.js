@@ -4,7 +4,7 @@ const progresoController = require('../controllers/progresoController');
 
 router.get('/', progresoController.obtenerTodos);
 router.get('/top', progresoController.top10);
-router.get('/:id_jugador', progresoController.obtenerPorJugador);
+router.get('/obtener_id/:id_jugador', progresoController.obtenerPorJugador);
 router.put('/:id_progreso', progresoController.actualizarProgreso);
 
 module.exports = router;
